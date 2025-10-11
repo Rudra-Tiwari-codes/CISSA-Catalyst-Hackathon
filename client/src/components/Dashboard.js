@@ -202,21 +202,21 @@ const Dashboard = () => {
       id: 'law',
       name: 'Law',
       icon: '⚖️',
-      description: 'Practice courtroom skills, legal reasoning, and case analysis with AI-powered mock trials and legal scenarios.',
+      description: 'Practice legal reasoning and case analysis through structured scenarios.',
       color: '#8B5CF6'
     },
     {
       id: 'biomed',
       name: 'Biomedical',
       icon: '🏥',
-      description: 'Master patient diagnosis, medical decision-making, and clinical reasoning through realistic medical scenarios.',
+      description: 'Work through medical scenarios and clinical reasoning exercises.',
       color: '#10B981'
     },
     {
       id: 'finance',
       name: 'Finance',
       icon: '💰',
-      description: 'Develop investment strategies, financial analysis, and market decision-making skills through dynamic simulations.',
+      description: 'Develop financial analysis and investment strategy skills.',
       color: '#F59E0B'
     }
   ];
