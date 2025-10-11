@@ -10,45 +10,32 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
+let subjectContent = {};
+let problems = {};
+let financeQuestions = {};
+let lawQuestions = {};
+let biomedQuestions = {};
+let userHints = {};
 
-
-// In-memory storage for demo purposes
-let subjectContent = {}; // Store processed PDF content
-let problems = {}; // Store generated problems
-let financeQuestions = {}; // Store Finance questions
-let lawQuestions = {}; // Store Law questions
-let biomedQuestions = {}; // Store Biomed questions
-let userHints = {}; // Track hints used per user per day
-
-// Utility function to clean up AI responses
 function cleanAIResponse(text) {
   if (!text) return text;
   
   return text
-    // Remove markdown headers
     .replace(/^#{1,6}\s+/gm, '')
-    // Remove bold formatting
     .replace(/\*\*(.*?)\*\*/g, '$1')
-    // Remove italic formatting
     .replace(/\*(.*?)\*/g, '$1')
-    // Remove code blocks
     .replace(/```[\s\S]*?```/g, '')
-    // Remove inline code
     .replace(/`(.*?)`/g, '$1')
-    // Remove extra whitespace
     .replace(/\n\s*\n/g, '\n\n')
     .trim();
 }
 
-// Load Finance questions from txt files
 async function loadFinanceQuestions() {
   const financeQuestionsDir = path.join(__dirname, 'Finance Questions');
   
@@ -63,7 +50,6 @@ async function loadFinanceQuestions() {
     const filePath = path.join(financeQuestionsDir, file);
     let subjectName = file.replace('.txt', '').toLowerCase();
     
-    // Handle specific file name mappings
     if (subjectName === 'introductory personal finance') {
       subjectName = 'introductory_personal_finance';
     } else if (subjectName === 'pof questions') {
@@ -87,7 +73,6 @@ async function loadFinanceQuestions() {
   }
 }
 
-// Parse Finance questions from text content
 function parseFinanceQuestions(content, subjectName) {
   const questions = {
     easy: [],
@@ -112,7 +97,6 @@ function parseFinanceQuestions(content, subjectName) {
       currentDifficulty = 'hard';
       questionNumber = 1;
     } else if (line && currentDifficulty && /^\d+\./.test(line)) {
-      // Extract question text (remove number prefix)
       const questionText = line.replace(/^\d+\.\s*/, '');
       questions[currentDifficulty].push({
         id: `${subjectName}_${currentDifficulty}_${questionNumber}`,
@@ -128,7 +112,6 @@ function parseFinanceQuestions(content, subjectName) {
   return questions;
 }
 
-// Load Law questions from txt files
 async function loadLawQuestions() {
   const lawQuestionsDir = path.join(__dirname, 'Law Questions');
   
@@ -143,7 +126,6 @@ async function loadLawQuestions() {
     const filePath = path.join(lawQuestionsDir, file);
     let subjectName = file.replace('.txt', '').toLowerCase();
     
-    // Handle specific file name mappings
     if (subjectName === 'accounting for commercial lawyers') {
       subjectName = 'accounting_for_commercial_lawyers';
     } else if (subjectName === 'company takeovers') {
@@ -158,7 +140,7 @@ async function loadLawQuestions() {
     
     try {
       const content = fs.readFileSync(filePath, 'utf8');
-      const questions = parseFinanceQuestions(content, subjectName); // Reuse the same parser
+      const questions = parseFinanceQuestions(content, subjectName);
       lawQuestions[subjectName] = questions;
       console.log(`Loaded ${questions.easy.length + questions.medium.length + questions.hard.length} questions for ${subjectName}`);
     } catch (error) {
@@ -167,7 +149,6 @@ async function loadLawQuestions() {
   }
 }
 
-// Load Biomed questions from txt files
 async function loadBiomedQuestions() {
   const biomedQuestionsDir = path.join(__dirname, 'Biomed Questions');
   
@@ -182,7 +163,6 @@ async function loadBiomedQuestions() {
     const filePath = path.join(biomedQuestionsDir, file);
     let subjectName = file.replace('.txt', '').toLowerCase();
     
-    // Handle specific file name mappings
     if (subjectName === 'biomed test') {
       subjectName = 'biomedical_fundamentals';
     } else {
@@ -191,7 +171,7 @@ async function loadBiomedQuestions() {
     
     try {
       const content = fs.readFileSync(filePath, 'utf8');
-      const questions = parseFinanceQuestions(content, subjectName); // Reuse the same parser
+      const questions = parseFinanceQuestions(content, subjectName);
       biomedQuestions[subjectName] = questions;
       console.log(`Loaded ${questions.easy.length + questions.medium.length + questions.hard.length} questions for ${subjectName}`);
     } catch (error) {
@@ -200,12 +180,10 @@ async function loadBiomedQuestions() {
   }
 }
 
-// Process PDF files and extract content
 async function processPDFFiles() {
   const financeDir = path.join(__dirname, '../Finance');
   const lawDir = path.join(__dirname, '../Law');
   
-  // Process Finance PDFs
   if (fs.existsSync(financeDir)) {
     const financeFiles = fs.readdirSync(financeDir).filter(file => file.endsWith('.pdf'));
     for (const file of financeFiles) {
@@ -228,7 +206,6 @@ async function processPDFFiles() {
     }
   }
   
-  // Process Law PDFs
   if (fs.existsSync(lawDir)) {
     const lawFiles = fs.readdirSync(lawDir).filter(file => file.endsWith('.pdf'));
     for (const file of lawFiles) {
@@ -252,7 +229,6 @@ async function processPDFFiles() {
   }
 }
 
-// Generate LeetCode-style problems using Gemini AI
 async function generateProblem(subjectKey, difficulty = 'Medium') {
   const subject = subjectContent[subjectKey];
   if (!subject) {
