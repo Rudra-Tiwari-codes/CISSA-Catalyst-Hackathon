@@ -1,7 +1,7 @@
 {
   "name": "skillsync",
   "version": "1.0.0",
-  "description": "AI-powered simulation platform for non-CS majors",
+  "description": "Interactive practice platform for Law, Biomedical, and Finance students",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -12,14 +12,14 @@
     "install-all": "npm install && cd client && npm install && cd ../server && npm install"
   },
   "keywords": [
-    "ai",
-    "simulation",
     "education",
+    "practice",
     "law",
-    "biomed",
-    "finance"
+    "biomedical",
+    "finance",
+    "learning"
   ],
-  "author": "SkillSync Team",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
