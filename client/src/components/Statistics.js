@@ -216,7 +216,7 @@ const Statistics = () => {
       console.log('Supabase error, using localStorage fallback for statistics');
       loadStatisticsLocalStorage();
     }
-  };
+  }, [user]);
 
   const loadStatisticsLocalStorage = () => {
     try {
