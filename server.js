@@ -6,11 +6,12 @@ const pdfParse = require('pdf-parse');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
+const config = require('./config');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = config.PORT;
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY);
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -359,7 +360,7 @@ app.post('/api/finance-questions/hint', async (req, res) => {
     userHints[userId][today] = 0;
   }
   
-  if (userHints[userId][today] >= 5) {
+  if (userHints[userId][today] >= config.MAX_DAILY_HINTS) {
     return res.status(429).json({ error: 'Daily hint limit exceeded' });
   }
   
@@ -541,7 +542,7 @@ app.post('/api/law-questions/hint', async (req, res) => {
     userHints[userId][today] = 0;
   }
   
-  if (userHints[userId][today] >= 5) {
+  if (userHints[userId][today] >= config.MAX_DAILY_HINTS) {
     return res.status(429).json({ error: 'Daily hint limit exceeded' });
   }
   
@@ -684,7 +685,6 @@ app.post('/api/biomed-questions/hint', async (req, res) => {
   const userId = req.headers['user-id'] || 'anonymous';
   const today = new Date().toDateString();
   
-  // Check if user has exceeded daily hint limit
   if (!userHints[userId]) {
     userHints[userId] = {};
   }
@@ -692,7 +692,7 @@ app.post('/api/biomed-questions/hint', async (req, res) => {
     userHints[userId][today] = 0;
   }
   
-  if (userHints[userId][today] >= 5) {
+  if (userHints[userId][today] >= config.MAX_DAILY_HINTS) {
     return res.status(429).json({ error: 'Daily hint limit exceeded' });
   }
   
