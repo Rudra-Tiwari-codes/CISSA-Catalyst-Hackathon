@@ -824,19 +824,20 @@ async function startServer() {
     await processPDFFiles();
     console.log(`Processed ${Object.keys(subjectContent).length} subjects`);
     
-    app.listen(PORT, () => {
-      console.log(`🚀 SkillSync Server running on port ${PORT}`);
-      console.log(`📚 Available subjects: ${Object.keys(subjectContent).length}`);
-      console.log(`💰 Finance questions: ${Object.keys(financeQuestions).length} subjects`);
-      console.log(`⚖️ Law questions: ${Object.keys(lawQuestions).length} subjects`);
-      console.log(`🏥 Biomed questions: ${Object.keys(biomedQuestions).length} subjects`);
-      console.log(`🎯 Ready for LeetCode-style practice!`);
-    });
+    console.log(`🚀 SkillSync Server ready for deployment`);
+    console.log(`📚 Available subjects: ${Object.keys(subjectContent).length}`);
+    console.log(`💰 Finance questions: ${Object.keys(financeQuestions).length} subjects`);
+    console.log(`⚖️ Law questions: ${Object.keys(lawQuestions).length} subjects`);
+    console.log(`🏥 Biomed questions: ${Object.keys(biomedQuestions).length} subjects`);
+    console.log(`🎯 Ready for LeetCode-style practice!`);
   } catch (error) {
     console.error('Error starting server:', error);
   }
 }
 
 startServer();
+
+// Export the app for Vercel
+module.exports = app;
 
 
