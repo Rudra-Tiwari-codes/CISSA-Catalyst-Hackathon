@@ -297,9 +297,6 @@ Format as JSON with these exact fields:
 
 // Routes
 
-// Finance Questions API
-
-// Get Finance question by subject, difficulty, and index
 app.get('/api/finance-questions/:subject/:difficulty/:index', (req, res) => {
   const { subject, difficulty, index } = req.params;
   const questionIndex = parseInt(index);
@@ -316,7 +313,6 @@ app.get('/api/finance-questions/:subject/:difficulty/:index', (req, res) => {
   res.json(questions[questionIndex]);
 });
 
-// Get solution for a Finance question using Gemini AI
 app.post('/api/finance-questions/solution', async (req, res) => {
   const { question, subject, difficulty } = req.body;
   
@@ -351,13 +347,11 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
   }
 });
 
-// Get hint for a Finance question using Gemini AI
 app.post('/api/finance-questions/hint', async (req, res) => {
   const { question, subject, difficulty, hintsUsed } = req.body;
   const userId = req.headers['user-id'] || 'anonymous';
   const today = new Date().toDateString();
   
-  // Check if user has exceeded daily hint limit
   if (!userHints[userId]) {
     userHints[userId] = {};
   }
@@ -398,7 +392,6 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
     const response = await result.response;
     const hint = cleanAIResponse(response.text());
     
-    // Increment hint count
     userHints[userId][today]++;
     
     res.json({ hint });
@@ -408,7 +401,6 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
   }
 });
 
-// Check answer with AI
 app.post('/api/finance-questions/check-answer', async (req, res) => {
   const { question, userAnswer, subject, difficulty } = req.body;
   
@@ -440,14 +432,11 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
     const result = await model.generateContent(prompt);
     const response = result.response.text();
     
-    // Try to parse the JSON response
     let evaluation;
     try {
-      // Extract JSON from the response (in case there's extra text)
       const jsonMatch = response.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       evaluation = JSON.parse(jsonMatch[0]);
-      // Clean up the feedback text
       if (evaluation.feedback) {
         evaluation.feedback = cleanAIResponse(evaluation.feedback);
       }
@@ -472,10 +461,9 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
   } catch (error) {
     console.error('Error checking answer:', error);
     
-    // If it's an API key error, provide a helpful fallback
     if (error.message && error.message.includes('API key not valid')) {
       const fallbackEvaluation = {
-        isCorrect: true, // Assume correct for testing
+        isCorrect: true,
         confidence: "low",
         feedback: "AI evaluation unavailable due to API key issue. Please update your Gemini API key in the .env file.",
         suggestions: "Contact your administrator to fix the API key configuration."
@@ -487,9 +475,6 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
   }
 });
 
-// Law Questions API
-
-// Get Law question by subject, difficulty, and index
 app.get('/api/law-questions/:subject/:difficulty/:index', (req, res) => {
   const { subject, difficulty, index } = req.params;
   const questionIndex = parseInt(index);
@@ -513,7 +498,6 @@ app.get('/api/law-questions/:subject/:difficulty/:index', (req, res) => {
   });
 });
 
-// Get solution for a Law question using Gemini AI
 app.post('/api/law-questions/solution', async (req, res) => {
   const { question, subject, difficulty } = req.body;
   
@@ -545,13 +529,11 @@ Format your response in a clear, educational manner suitable for a law student.`
   }
 });
 
-// Get hint for a Law question using Gemini AI
 app.post('/api/law-questions/hint', async (req, res) => {
   const { question, subject, difficulty, hintsUsed } = req.body;
   const userId = req.headers['user-id'] || 'anonymous';
   const today = new Date().toDateString();
   
-  // Check if user has exceeded daily hint limit
   if (!userHints[userId]) {
     userHints[userId] = {};
   }
@@ -577,7 +559,6 @@ app.post('/api/law-questions/hint', async (req, res) => {
     const hintIndex = Math.min(hintsUsed || 0, hintLevels.length - 1);
     const hint = hintLevels[hintIndex];
     
-    // Increment hint count
     userHints[userId][today]++;
     
     res.json({ hint });
@@ -587,7 +568,6 @@ app.post('/api/law-questions/hint', async (req, res) => {
   }
 });
 
-// Check Law answer with AI
 app.post('/api/law-questions/check-answer', async (req, res) => {
   const { question, userAnswer, subject, difficulty } = req.body;
   
@@ -619,10 +599,8 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
     const result = await model.generateContent(prompt);
     const response = result.response.text();
     
-    // Try to parse the JSON response
     let evaluation;
     try {
-      // Extract JSON from the response (in case there's extra text)
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         evaluation = JSON.parse(jsonMatch[0]);
@@ -631,7 +609,6 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
       }
     } catch (parseError) {
       console.error('Error parsing AI response:', parseError);
-      // Fallback response
       evaluation = {
         isCorrect: false,
         confidence: "low",
@@ -647,9 +624,6 @@ IMPORTANT: Provide clean, plain text responses without markdown formatting (no *
   }
 });
 
-// Biomed Questions API
-
-// Get Biomed question by subject, difficulty, and index
 app.get('/api/biomed-questions/:subject/:difficulty/:index', (req, res) => {
   const { subject, difficulty, index } = req.params;
   const questionIndex = parseInt(index);
@@ -673,7 +647,6 @@ app.get('/api/biomed-questions/:subject/:difficulty/:index', (req, res) => {
   });
 });
 
-// Get solution for a Biomed question using Gemini AI
 app.post('/api/biomed-questions/solution', async (req, res) => {
   const { question, subject, difficulty } = req.body;
   
