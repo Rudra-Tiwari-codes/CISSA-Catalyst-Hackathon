@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { Container, Title, Button, Card, Badge } from '../styles/GlobalStyle';
+import { Container, Title, Button, Card } from '../styles/GlobalStyle';
 
 const ResultsContainer = styled.div`
   min-height: 100vh;
@@ -159,7 +159,6 @@ const NewBadge = styled.div`
 const Results = () => {
   const { attemptId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -188,16 +187,6 @@ const Results = () => {
       setLoading(false);
     }, 1000);
   }, [attemptId]);
-
-  const getGradeColor = (grade) => {
-    switch (grade) {
-      case 'A': return '#10B981';
-      case 'B': return '#F59E0B';
-      case 'C': return '#8B5CF6';
-      case 'D': return '#EF4444';
-      default: return '#8B5CF6';
-    }
-  };
 
   const getGradeMessage = (grade) => {
     switch (grade) {

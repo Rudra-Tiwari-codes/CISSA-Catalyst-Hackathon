@@ -133,14 +133,14 @@ const Statistics = () => {
 
   useEffect(() => {
     loadStatistics();
-  }, [user]);
+  }, [user, loadStatistics]);
 
   const loadStatistics = async () => {
     if (!user) return;
 
     try {
       // Try Supabase first
-      const { data: userStats, error: statsError } = await supabase
+      const { error: statsError } = await supabase
         .from('user_statistics')
         .select('*')
         .eq('user_id', user.id)

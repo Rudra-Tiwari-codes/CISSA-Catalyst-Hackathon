@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { Container, Title, Subtitle, Button, Input, Card } from '../styles/GlobalStyle';
+import { Title, Subtitle, Button, Input, Card } from '../styles/GlobalStyle';
 
 const HomeContainer = styled.div`
   min-height: 100vh;

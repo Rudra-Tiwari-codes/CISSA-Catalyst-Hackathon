@@ -167,7 +167,7 @@ const BadgeSystem = () => {
   useEffect(() => {
     const interval = setInterval(checkForNewBadges, 1000);
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user, checkForNewBadges]);
 
   if (!showBadge || !currentBadge) return null;
 

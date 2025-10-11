@@ -165,7 +165,7 @@ const ScenarioInterface = () => {
     startTimer();
     checkIfMarked();
     return () => clearInterval(timerRef.current);
-  }, []);
+  }, [checkIfMarked, fetchScenario]);
 
   useEffect(() => {
     scrollToBottom();

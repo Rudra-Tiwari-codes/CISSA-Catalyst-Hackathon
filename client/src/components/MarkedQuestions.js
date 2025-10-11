@@ -112,7 +112,7 @@ const MarkedQuestions = () => {
 
   useEffect(() => {
     loadMarkedQuestions();
-  }, []);
+  }, [loadMarkedQuestions]);
 
   const loadMarkedQuestions = () => {
     try {

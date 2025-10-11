@@ -138,11 +138,11 @@ const ScenarioLibrary = () => {
 
   useEffect(() => {
     fetchScenarios();
-  }, [major]);
+  }, [major, fetchScenarios]);
 
   useEffect(() => {
     filterScenarios();
-  }, [scenarios, selectedDifficulty]);
+  }, [scenarios, selectedDifficulty, filterScenarios]);
 
   const fetchScenarios = async () => {
     try {

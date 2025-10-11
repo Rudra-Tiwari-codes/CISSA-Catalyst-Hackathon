@@ -225,7 +225,7 @@ const Leaderboard = () => {
     if (user) {
       fetchUserProgress();
     }
-  }, [user]);
+  }, [user, fetchLeaderboard, fetchUserProgress]);
 
   const fetchLeaderboard = async () => {
     try {
