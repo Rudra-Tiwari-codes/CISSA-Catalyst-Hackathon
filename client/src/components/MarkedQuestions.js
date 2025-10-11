@@ -110,10 +110,6 @@ const MarkedQuestions = () => {
   const [markedQuestions, setMarkedQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadMarkedQuestions();
-  }, [loadMarkedQuestions]);
-
   const loadMarkedQuestions = useCallback(() => {
     try {
       const saved = localStorage.getItem(`marked_questions_${user?.id}`);
@@ -125,7 +121,11 @@ const MarkedQuestions = () => {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user?.id]);
+
+  useEffect(() => {
+    loadMarkedQuestions();
+  }, [loadMarkedQuestions]);
 
   const removeMarkedQuestion = (questionId) => {
     const updated = markedQuestions.filter(q => q.id !== questionId);

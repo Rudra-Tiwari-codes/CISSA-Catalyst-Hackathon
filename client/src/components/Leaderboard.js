@@ -220,13 +220,6 @@ const Leaderboard = () => {
   const [userProgress, setUserProgress] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchLeaderboard();
-    if (user) {
-      fetchUserProgress();
-    }
-  }, [user, fetchLeaderboard, fetchUserProgress]);
-
   const fetchLeaderboard = useCallback(async () => {
     try {
       // Try Supabase first
@@ -262,40 +255,6 @@ const Leaderboard = () => {
       setLoading(false);
     }
   }, []);
-
-  const fetchLeaderboardLocalStorage = () => {
-    try {
-      // Get all users from localStorage
-      const users = JSON.parse(localStorage.getItem('skillsync_users') || '[]');
-      const leaderboard = [];
-      
-      users.forEach(user => {
-        const scores = JSON.parse(localStorage.getItem(`leaderboard_scores_${user.id}`) || '{}');
-        if (scores.total_score > 0) {
-          leaderboard.push({
-            userId: user.id,
-            username: user.username,
-            score: scores.total_score || 0,
-            avatar: user.avatar || {}
-          });
-        }
-      });
-      
-      // Sort by score and limit to 10
-      const sortedLeaderboard = leaderboard
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 10);
-      
-      setLeaderboard(sortedLeaderboard);
-      console.log('Leaderboard loaded from localStorage:', sortedLeaderboard);
-
-    } catch (error) {
-      console.error('Error fetching leaderboard from localStorage:', error);
-      setLeaderboard([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const fetchUserProgress = useCallback(async () => {
     try {
@@ -348,7 +307,48 @@ const Leaderboard = () => {
       console.log('Supabase error, using localStorage fallback for user progress');
       fetchUserProgressLocalStorage();
     }
-  }, [user]);
+  }, [user, fetchUserProgressLocalStorage]);
+
+  useEffect(() => {
+    fetchLeaderboard();
+    if (user) {
+      fetchUserProgress();
+    }
+  }, [user, fetchLeaderboard, fetchUserProgress]);
+
+  const fetchLeaderboardLocalStorage = () => {
+    try {
+      // Get all users from localStorage
+      const users = JSON.parse(localStorage.getItem('skillsync_users') || '[]');
+      const leaderboard = [];
+      
+      users.forEach(user => {
+        const scores = JSON.parse(localStorage.getItem(`leaderboard_scores_${user.id}`) || '{}');
+        if (scores.total_score > 0) {
+          leaderboard.push({
+            userId: user.id,
+            username: user.username,
+            score: scores.total_score || 0,
+            avatar: user.avatar || {}
+          });
+        }
+      });
+      
+      // Sort by score and limit to 10
+      const sortedLeaderboard = leaderboard
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10);
+      
+      setLeaderboard(sortedLeaderboard);
+      console.log('Leaderboard loaded from localStorage:', sortedLeaderboard);
+
+    } catch (error) {
+      console.error('Error fetching leaderboard from localStorage:', error);
+      setLeaderboard([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchUserProgressLocalStorage = () => {
     try {

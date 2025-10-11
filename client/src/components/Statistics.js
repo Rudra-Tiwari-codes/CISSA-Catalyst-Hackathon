@@ -131,9 +131,76 @@ const Statistics = () => {
   });
   const [selectedFilter, setSelectedFilter] = useState('All');
 
-  useEffect(() => {
-    loadStatistics();
-  }, [user, loadStatistics]);
+  const loadStatisticsLocalStorage = useCallback(() => {
+    try {
+      // Get question attempts from localStorage
+      const attempts = JSON.parse(localStorage.getItem(`question_attempts_${user.id}`) || '[]');
+      
+      // Calculate statistics from attempts
+      const totalQuestions = attempts.length;
+      const easyQuestions = attempts.filter(a => a.difficulty.toLowerCase() === 'easy').length;
+      const mediumQuestions = attempts.filter(a => a.difficulty.toLowerCase() === 'medium').length;
+      const hardQuestions = attempts.filter(a => a.difficulty.toLowerCase() === 'hard').length;
+
+      // Get daily stats from localStorage
+      const dailyStats = JSON.parse(localStorage.getItem(`daily_stats_${user.id}`) || '{}');
+      
+      // Generate daily stats for the last 7 days
+      const last7Days = [];
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+        const dateStr = date.toISOString().split('T')[0];
+        const dayName = dayNames[date.getDay()];
+        
+        const dayStats = dailyStats[dateStr];
+        
+        last7Days.push({
+          day: dayName,
+          easy: dayStats?.easy_questions || 0,
+          medium: dayStats?.medium_questions || 0,
+          hard: dayStats?.hard_questions || 0
+        });
+      }
+
+      setStats({
+        totalQuestions,
+        easyQuestions,
+        mediumQuestions,
+        hardQuestions,
+        dailyStats: last7Days
+      });
+
+      console.log('Statistics loaded from localStorage:', {
+        totalQuestions,
+        easyQuestions,
+        mediumQuestions,
+        hardQuestions,
+        attempts: attempts.length,
+        dailyStats: last7Days
+      });
+
+    } catch (error) {
+      console.error('Error loading statistics from localStorage:', error);
+      // Fallback to empty stats
+      setStats({
+        totalQuestions: 0,
+        easyQuestions: 0,
+        mediumQuestions: 0,
+        hardQuestions: 0,
+        dailyStats: [
+          { day: 'Mon', easy: 0, medium: 0, hard: 0 },
+          { day: 'Tue', easy: 0, medium: 0, hard: 0 },
+          { day: 'Wed', easy: 0, medium: 0, hard: 0 },
+          { day: 'Thu', easy: 0, medium: 0, hard: 0 },
+          { day: 'Fri', easy: 0, medium: 0, hard: 0 },
+          { day: 'Sat', easy: 0, medium: 0, hard: 0 },
+          { day: 'Sun', easy: 0, medium: 0, hard: 0 }
+        ]
+      });
+    }
+  }, [user]);
 
   const loadStatistics = useCallback(async () => {
     if (!user) return;
@@ -216,78 +283,11 @@ const Statistics = () => {
       console.log('Supabase error, using localStorage fallback for statistics');
       loadStatisticsLocalStorage();
     }
-  }, [user]);
+  }, [user, loadStatisticsLocalStorage]);
 
-  const loadStatisticsLocalStorage = () => {
-    try {
-      // Get question attempts from localStorage
-      const attempts = JSON.parse(localStorage.getItem(`question_attempts_${user.id}`) || '[]');
-      
-      // Calculate statistics from attempts
-      const totalQuestions = attempts.length;
-      const easyQuestions = attempts.filter(a => a.difficulty.toLowerCase() === 'easy').length;
-      const mediumQuestions = attempts.filter(a => a.difficulty.toLowerCase() === 'medium').length;
-      const hardQuestions = attempts.filter(a => a.difficulty.toLowerCase() === 'hard').length;
-
-      // Get daily stats from localStorage
-      const dailyStats = JSON.parse(localStorage.getItem(`daily_stats_${user.id}`) || '{}');
-      
-      // Generate daily stats for the last 7 days
-      const last7Days = [];
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
-        const dateStr = date.toISOString().split('T')[0];
-        const dayName = dayNames[date.getDay()];
-        
-        const dayStats = dailyStats[dateStr];
-        
-        last7Days.push({
-          day: dayName,
-          easy: dayStats?.easy_questions || 0,
-          medium: dayStats?.medium_questions || 0,
-          hard: dayStats?.hard_questions || 0
-        });
-      }
-
-      setStats({
-        totalQuestions,
-        easyQuestions,
-        mediumQuestions,
-        hardQuestions,
-        dailyStats: last7Days
-      });
-
-      console.log('Statistics loaded from localStorage:', {
-        totalQuestions,
-        easyQuestions,
-        mediumQuestions,
-        hardQuestions,
-        attempts: attempts.length,
-        dailyStats: last7Days
-      });
-
-    } catch (error) {
-      console.error('Error loading statistics from localStorage:', error);
-      // Fallback to empty stats
-      setStats({
-        totalQuestions: 0,
-        easyQuestions: 0,
-        mediumQuestions: 0,
-        hardQuestions: 0,
-        dailyStats: [
-          { day: 'Mon', easy: 0, medium: 0, hard: 0 },
-          { day: 'Tue', easy: 0, medium: 0, hard: 0 },
-          { day: 'Wed', easy: 0, medium: 0, hard: 0 },
-          { day: 'Thu', easy: 0, medium: 0, hard: 0 },
-          { day: 'Fri', easy: 0, medium: 0, hard: 0 },
-          { day: 'Sat', easy: 0, medium: 0, hard: 0 },
-          { day: 'Sun', easy: 0, medium: 0, hard: 0 }
-        ]
-      });
-    }
-  }, [user]);
+  useEffect(() => {
+    loadStatistics();
+  }, [user, loadStatistics]);
 
   const getFilteredData = () => {
     if (selectedFilter === 'All') {

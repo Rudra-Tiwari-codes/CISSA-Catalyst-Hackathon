@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
@@ -59,7 +59,7 @@ const BadgeSystem = () => {
   const [showBadge, setShowBadge] = useState(false);
   const [currentBadge, setCurrentBadge] = useState(null);
 
-  const badges = {
+  const badges = useMemo(() => ({
     first_question: {
       title: "🎯 First Question!",
       description: "You answered your first question!",
@@ -100,7 +100,7 @@ const BadgeSystem = () => {
       description: "You completed 50 Finance questions!",
       icon: "💰"
     }
-  };
+  }), []);
 
   const checkForNewBadges = useCallback(() => {
     if (!user) return;
@@ -162,7 +162,7 @@ const BadgeSystem = () => {
         setCurrentBadge(null);
       }, 4000);
     }
-  }, [user]);
+  }, [user, badges]);
 
   useEffect(() => {
     const interval = setInterval(checkForNewBadges, 1000);

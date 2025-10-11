@@ -136,14 +136,6 @@ const ScenarioLibrary = () => {
 
   const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
-  useEffect(() => {
-    fetchScenarios();
-  }, [major, fetchScenarios]);
-
-  useEffect(() => {
-    filterScenarios();
-  }, [scenarios, selectedDifficulty, filterScenarios]);
-
   const fetchScenarios = useCallback(async () => {
     try {
       setLoading(true);
@@ -163,6 +155,14 @@ const ScenarioLibrary = () => {
       setFilteredScenarios(scenarios.filter(scenario => scenario.difficulty === selectedDifficulty));
     }
   }, [scenarios, selectedDifficulty]);
+
+  useEffect(() => {
+    fetchScenarios();
+  }, [major, fetchScenarios]);
+
+  useEffect(() => {
+    filterScenarios();
+  }, [scenarios, selectedDifficulty, filterScenarios]);
 
   const handleScenarioClick = (scenarioId) => {
     navigate(`/scenario/${major}/${scenarioId}`);
