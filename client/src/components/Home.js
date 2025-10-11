@@ -161,7 +161,7 @@ const Home = () => {
           <Logo>
             <LogoIcon>⚡</LogoIcon>
             <Title>SkillSync</Title>
-            <Subtitle>Revolutionary AI-Powered Learning Platform for Global Academic Excellence</Subtitle>
+            <Subtitle>Practice platform for Law, Biomedical, and Finance students</Subtitle>
           </Logo>
 
           <LoginCard>
@@ -223,9 +223,9 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <FeatureCard>
-                <FeatureIcon>🌍</FeatureIcon>
-                <FeatureTitle>Global Learning Revolution</FeatureTitle>
-                <FeatureText>Empowering millions of students worldwide with AI-driven personalized education across all disciplines</FeatureText>
+                <FeatureIcon>📚</FeatureIcon>
+                <FeatureTitle>Multi-Subject Support</FeatureTitle>
+                <FeatureText>Practice questions across Finance, Law, and Biomedical Sciences with difficulty-based progression</FeatureText>
               </FeatureCard>
             </motion.div>
 
@@ -235,9 +235,9 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <FeatureCard>
-                <FeatureIcon>🚀</FeatureIcon>
-                <FeatureTitle>Academic Excellence Accelerator</FeatureTitle>
-                <FeatureText>Proven to boost academic performance by 40% through intelligent practice and real-time AI feedback</FeatureText>
+                <FeatureIcon>🤖</FeatureIcon>
+                <FeatureTitle>Automated Feedback</FeatureTitle>
+                <FeatureText>Instant evaluation and detailed feedback on your answers to support learning</FeatureText>
               </FeatureCard>
             </motion.div>
 
@@ -247,23 +247,11 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <FeatureCard>
-                <FeatureIcon>⚡</FeatureIcon>
-                <FeatureTitle>The "LeetCode" for Every Field</FeatureTitle>
-                <FeatureText>Revolutionary practice platform spanning Finance, Law, Medicine, Engineering, and beyond - democratizing skill development</FeatureText>
+                <FeatureIcon>📊</FeatureIcon>
+                <FeatureTitle>Progress Tracking</FeatureTitle>
+                <FeatureText>Monitor your performance with comprehensive statistics and leaderboards</FeatureText>
               </FeatureCard>
             </motion.div>
-
-            {/* <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <FeatureCard>
-                <FeatureIcon>🎯</FeatureIcon>
-                <FeatureTitle>Hackathon Winner Ready</FeatureTitle>
-                <FeatureText>Built with cutting-edge technology, scalable architecture, and innovative AI integration - designed to impress judges and investors</FeatureText>
-              </FeatureCard>
-            </motion.div> */}
           </Features> 
         </motion.div>
       </HomeContent>
