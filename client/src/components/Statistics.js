@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
@@ -135,7 +135,7 @@ const Statistics = () => {
     loadStatistics();
   }, [user, loadStatistics]);
 
-  const loadStatistics = async () => {
+  const loadStatistics = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -287,7 +287,7 @@ const Statistics = () => {
         ]
       });
     }
-  };
+  }, [user]);
 
   const getFilteredData = () => {
     if (selectedFilter === 'All') {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
 import { Container, Title, Button, Card } from '../styles/GlobalStyle';
 
 const ResultsContainer = styled.div`

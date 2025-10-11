@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
@@ -102,7 +102,7 @@ const BadgeSystem = () => {
     }
   };
 
-  const checkForNewBadges = () => {
+  const checkForNewBadges = useCallback(() => {
     if (!user) return;
 
     const userStats = JSON.parse(localStorage.getItem(`userStats_${user.id}`) || '{}');
@@ -162,7 +162,7 @@ const BadgeSystem = () => {
         setCurrentBadge(null);
       }, 4000);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     const interval = setInterval(checkForNewBadges, 1000);

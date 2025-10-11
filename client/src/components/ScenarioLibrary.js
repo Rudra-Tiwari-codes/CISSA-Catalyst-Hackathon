@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -144,7 +144,7 @@ const ScenarioLibrary = () => {
     filterScenarios();
   }, [scenarios, selectedDifficulty, filterScenarios]);
 
-  const fetchScenarios = async () => {
+  const fetchScenarios = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(`/api/scenarios/${major}`);
@@ -154,15 +154,15 @@ const ScenarioLibrary = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [major]);
 
-  const filterScenarios = () => {
+  const filterScenarios = useCallback(() => {
     if (selectedDifficulty === 'All') {
       setFilteredScenarios(scenarios);
     } else {
       setFilteredScenarios(scenarios.filter(scenario => scenario.difficulty === selectedDifficulty));
     }
-  };
+  }, [scenarios, selectedDifficulty]);
 
   const handleScenarioClick = (scenarioId) => {
     navigate(`/scenario/${major}/${scenarioId}`);

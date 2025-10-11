@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -171,7 +171,7 @@ const ScenarioInterface = () => {
     scrollToBottom();
   }, [messages]);
 
-  const fetchScenario = async () => {
+  const fetchScenario = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(`/api/scenarios/${major}/${scenarioId}`);
@@ -189,7 +189,7 @@ const ScenarioInterface = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [major, scenarioId]);
 
   const startTimer = () => {
     timerRef.current = setInterval(() => {
@@ -291,7 +291,7 @@ const ScenarioInterface = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const checkIfMarked = () => {
+  const checkIfMarked = useCallback(() => {
     try {
       const saved = localStorage.getItem(`marked_questions_${user?.id}`);
       if (saved) {
@@ -304,7 +304,7 @@ const ScenarioInterface = () => {
     } catch (error) {
       console.error('Error checking marked status:', error);
     }
-  };
+  }, [user, scenarioId, major]);
 
   const toggleMarkQuestion = () => {
     try {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -227,7 +227,7 @@ const Leaderboard = () => {
     }
   }, [user, fetchLeaderboard, fetchUserProgress]);
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     try {
       // Try Supabase first
       const { data: leaderboardData, error } = await supabase
@@ -261,7 +261,7 @@ const Leaderboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const fetchLeaderboardLocalStorage = () => {
     try {
@@ -297,7 +297,7 @@ const Leaderboard = () => {
     }
   };
 
-  const fetchUserProgress = async () => {
+  const fetchUserProgress = useCallback(async () => {
     try {
       // Try Supabase first
       const { data: leaderboardScore, error: scoreError } = await supabase
@@ -348,7 +348,7 @@ const Leaderboard = () => {
       console.log('Supabase error, using localStorage fallback for user progress');
       fetchUserProgressLocalStorage();
     }
-  };
+  }, [user]);
 
   const fetchUserProgressLocalStorage = () => {
     try {
