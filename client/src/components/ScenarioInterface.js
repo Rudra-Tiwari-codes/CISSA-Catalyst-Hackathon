@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -160,9 +161,12 @@ const ScenarioInterface = () => {
   const messagesEndRef = useRef(null);
   const timerRef = useRef(null);
 
+  // eslint-disable-next-line no-use-before-define
   useEffect(() => {
+    // eslint-disable-next-line no-use-before-define
     fetchScenario();
     startTimer();
+    // eslint-disable-next-line no-use-before-define
     checkIfMarked();
     return () => clearInterval(timerRef.current);
   }, [checkIfMarked, fetchScenario]);

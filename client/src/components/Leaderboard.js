@@ -256,6 +256,42 @@ const Leaderboard = () => {
     }
   }, []);
 
+  const fetchUserProgressLocalStorage = useCallback(() => {
+    try {
+      // Get user's leaderboard score from localStorage
+      const leaderboardScore = JSON.parse(localStorage.getItem(`leaderboard_scores_${user.id}`) || '{}');
+      
+      // Get user's question attempts from localStorage
+      const attempts = JSON.parse(localStorage.getItem(`question_attempts_${user.id}`) || '[]');
+      
+      // Get user's statistics for badges from localStorage
+      const userStats = JSON.parse(localStorage.getItem(`user_statistics_${user.id}`) || '{}');
+      
+      setUserProgress({
+        attempts: attempts || [],
+        totalScore: leaderboardScore?.total_score || 0,
+        badges: userStats?.badges || [],
+        streak: leaderboardScore?.current_streak || 0
+      });
+
+      console.log('User progress loaded from localStorage:', {
+        totalScore: leaderboardScore?.total_score || 0,
+        attempts: attempts.length,
+        badges: userStats?.badges || [],
+        streak: leaderboardScore?.current_streak || 0
+      });
+
+    } catch (error) {
+      console.error('Error fetching user progress from localStorage:', error);
+      setUserProgress({
+        attempts: [],
+        totalScore: 0,
+        badges: [],
+        streak: 0
+      });
+    }
+  }, [user]);
+
   const fetchUserProgress = useCallback(async () => {
     try {
       // Try Supabase first
@@ -307,7 +343,7 @@ const Leaderboard = () => {
       console.log('Supabase error, using localStorage fallback for user progress');
       fetchUserProgressLocalStorage();
     }
-  }, [user, fetchUserProgressLocalStorage]);
+  }, [user, fetchUserProgressLocalStorage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     fetchLeaderboard();
@@ -347,42 +383,6 @@ const Leaderboard = () => {
       setLeaderboard([]);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchUserProgressLocalStorage = () => {
-    try {
-      // Get user's leaderboard score from localStorage
-      const leaderboardScore = JSON.parse(localStorage.getItem(`leaderboard_scores_${user.id}`) || '{}');
-      
-      // Get user's question attempts from localStorage
-      const attempts = JSON.parse(localStorage.getItem(`question_attempts_${user.id}`) || '[]');
-      
-      // Get user's statistics for badges from localStorage
-      const userStats = JSON.parse(localStorage.getItem(`user_statistics_${user.id}`) || '{}');
-      
-      setUserProgress({
-        attempts: attempts || [],
-        totalScore: leaderboardScore?.total_score || 0,
-        badges: userStats?.badges || [],
-        streak: leaderboardScore?.current_streak || 0
-      });
-
-      console.log('User progress loaded from localStorage:', {
-        totalScore: leaderboardScore?.total_score || 0,
-        attempts: attempts.length,
-        badges: userStats?.badges || [],
-        streak: leaderboardScore?.current_streak || 0
-      });
-
-    } catch (error) {
-      console.error('Error fetching user progress from localStorage:', error);
-      setUserProgress({
-        attempts: [],
-        totalScore: 0,
-        badges: [],
-        streak: 0
-      });
     }
   };
 
