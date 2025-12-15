@@ -78,15 +78,6 @@ The application will run on:
 - Frontend: http://localhost:3000
 - Backend: http://localhost:5000
 
-## Usage
-
-1. Navigate to the application homepage
-2. Create an account or log in
-3. Select a subject area (Law, Biomedical Sciences, or Finance)
-4. Choose a difficulty level
-5. Answer questions and receive instant feedback
-6. Track progress through the statistics dashboard
-
 ## Project Structure
 
 ```
