@@ -113,8 +113,5 @@ To add new questions to the platform:
 2. Format questions with one question per line
 3. Restart the server to load new content
 
-Questions are parsed and loaded automatically on server startup.
-
 Full Video Walkthrough: 
-
-Watch the full demo on YouTube: https://youtu.be/p5IEfjwj8Gk
+https://youtu.be/p5IEfjwj8Gk
