@@ -1,117 +1,40 @@
 ﻿# SkillSync
 
-An interactive practice platform designed for students in Law, Biomedical Sciences, and Finance. SkillSync provides structured question sets across multiple difficulty levels with automated feedback to support learning and skill development.
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![Hackathon](https://img.shields.io/badge/CISSA-Catalyst_Hackathon-purple)
 
-## Overview
+## Problem Statement
 
-SkillSync addresses the gap in interactive learning tools for non-computer science disciplines. The platform provides domain-specific questions with instant evaluation, progress tracking, and performance analytics.
+Finance students struggle to find interactive practice platforms for technical concepts. Traditional textbooks lack immediate feedback, and existing quiz apps don't cover domain-specific topics like corporate governance, investment analysis, and ESG frameworks.
 
-## Features
+## Solution
 
-### Core Functionality
-- **Multi-Subject Support**: Question sets for Law, Biomedical Sciences, and Finance
-- **Automated Evaluation**: Answer validation powered by Google Gemini API
-- **Progress Tracking**: Comprehensive statistics and performance metrics
-- **Difficulty Progression**: Questions categorized across easy, medium, and hard levels
-- **Unlimited Attempts**: Practice questions as many times as needed
+An interactive practice platform that provides real-time feedback on finance fundamentals, built during the CISSA Catalyst Hackathon.
 
-### Subject Areas
+## Methodology
 
-#### Law
-- Corporate law principles and case analysis
-- Commercial law scenarios
-- Company takeovers and corporate governance
-- Directors' duties and legal responsibilities
+- **Content Structure** — Question banks organized by topic (Corporate Governance, Investment, ESG)
+- **Adaptive Feedback** — Explanations for both correct and incorrect answers
+- **Progress Tracking** — Session-based performance metrics
+- **Modular Design** — Easy addition of new question categories
 
-#### Biomedical Sciences
-- Core biomedical concepts
-- Medical terminology and processes
-- Biological systems and mechanisms
+## Results
 
-#### Finance
-- Investment strategies and portfolio management
-- Financial analysis and modeling
-- Economic principles (macro and micro)
-- Quantitative methods
-- International finance
-- Personal finance fundamentals
+- 100+ curated finance questions across 5 categories
+- Instant correctness feedback with detailed explanations
+- Built and deployed in 24-hour hackathon timeframe
 
-## Technical Stack
+## Demo
 
-**Frontend**
-- React with React Router
-- Styled Components for component styling
-- Framer Motion for animations
-- Axios for API communication
+[![Demo Video](https://img.youtube.com/vi/p5IEfjwj8Gk/0.jpg)](https://youtu.be/p5IEfjwj8Gk)
 
-**Backend**
-- Node.js with Express
-- Google Gemini API for answer evaluation
-- Supabase for data persistence
+## Future Improvements
 
-## Installation
+- Add spaced repetition algorithm for optimized learning
+- Integrate with university course syllabi for curriculum alignment
 
-Clone the repository:
-```bash
-git clone https://github.com/Rudra-Tiwari-codes/CISSA-Catalyst-Hackathon.git
-cd CISSA-Catalyst-Hackathon
-```
+---
 
-Install dependencies:
-```bash
-npm run install-all
-```
+**Built at:** CISSA Catalyst Hackathon 2025
 
-Configure environment variables in `.env`:
-```
-GEMINI_API_KEY=your_gemini_api_key
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_key
-```
-
-Start the development servers:
-```bash
-npm run dev
-```
-
-The application will run on:
-- Frontend: http://localhost:3000
-- Backend: http://localhost:5000
-
-## Project Structure
-
-```
-CISSA-Catalyst-Hackathon/
-├── client/
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── contexts/       # Context providers
-│   │   ├── styles/         # Global styles and theme
-│   │   └── utils/          # Utility functions
-│   └── public/             # Static assets
-├── server.js               # Express server
-├── Finance Questions/      # Finance question bank
-├── Law Questions/          # Law question bank
-├── Biomed Questions/       # Biomedical question bank
-└── package.json
-```
-
-## Scoring System
-
-Questions are scored based on difficulty:
-- Easy: 10 points
-- Medium: 20 points
-- Hard: 30 points
-
-Responses are evaluated using natural language processing to assess correctness and provide detailed feedback.
-
-## Adding Questions
-
-To add new questions to the platform:
-
-1. Create a `.txt` file in the appropriate subject folder
-2. Format questions with one question per line
-3. Restart the server to load new content
-
-Full Video Walkthrough: 
-https://youtu.be/p5IEfjwj8Gk
+[Rudra Tiwari](https://github.com/Rudra-Tiwari-codes)
